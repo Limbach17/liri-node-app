@@ -19,6 +19,8 @@ var moment = require("moment");
 var currentTime = moment().format("dddd, MMMM DO YYYY, h:mm:ss a");
 
 var action = process.argv[2];
+var input = [];
+
 
 /* fs.readFile("welcome.txt", "utf-8", function(err, data){
   if (err) {
@@ -49,64 +51,95 @@ inquirer
   }) */
 
 switch (action){
-  case "make-profile":
-    makeProfile();
-    logStream.write("\n" + currentTime + " --- " + "make-profile");
-    break;
+    case "make-profile":
+      makeProfile();
+      logStream.write("\n" + currentTime + " --- " + "make-profile");
+      break;
 
-  case "concert-this":
-    concertDisplay();
-    logStream.write("\n" + currentTime + " --- " + "concert-this");
-    break;
-
-  case "spotify-this":
-    songSearch();
-    logStream.write("\n" + currentTime + " --- " + "spotify-this");
-    break;
-
-  case "movie-this":
-    movieInfo();
-    logStream.write("\n" + currentTime + " --- " + "movie-this");
-    break;
-
-/////////////////////////////////
-  case "do-what-it-says":
-    fs.readFile("recent.txt", "utf-8", function (err, data) {
-      if (err) {
-        console.log(err);
+    case "concert-this":
+      if (process.argv.length === 3) {
+        input.push("Ravi" + "Coltrane");
       }
-      var dataArray = data.split(",");
-
-      switch (dattaArray[0]){
-        case 0:
-          break;
-        default: 
-          console.log("hi");
+      else {
+        for (var a = 3; a < process.argv.length; a++){
+          input.push(process.argv[a]);
+        }
       }
-    })
-    logStream.write("\n" + currentTime + " --- " + "do-what-it-says");
-    break;
-/////////////////////////////////
-  case "read-profile":
-    callProfile();
-    logStream.write("\n" + currentTime + " --- " + "read-profile");
-    break;
+      concertDisplay();
+      logStream.write("\n" + currentTime + " --- " + "concert-this");
+      break;
 
-  case "help":
-    fs.readFile("help.txt", "utf-8", function (err, data){
-      if (err) {
-        console.log(err);
+    case "spotify-this":
+      if (process.argv.length === 3) {
+        input.push("Game" + "of" + "Pricks");
       }
-      console.log(" ");
-      console.log(data);
-    })
-    logStream.write("\n" + currentTime + " --- " + "help");
-    break;
+      else {
+        for (var s = 3; s < process.argv.length; s++){
+          input.push(process.argv[s]);
+        }
+      }
+      songSearch();
+      logStream.write("\n" + currentTime + " --- " + "spotify-this");
+      break;
 
-  default:
-    console.log("Valid commands" + validCommands);
-    logStream.write("\n" + currentTime + " --- " + "invalid-command");
-}
+    case "movie-this":
+      if (process.argv.length === 3) {
+        input.push("Mr." + "Nobody");
+      }
+      else {
+        for (var m = 3; m < process.argv.length; m++) { 
+        input.push(process.argv[m]);
+        }
+      }
+      movieInfo();
+      logStream.write("\n" + currentTime + " --- " + "movie-this");
+      break;
+
+    case "read-profile":
+      callProfile();
+      logStream.write("\n" + currentTime + " --- " + "read-profile");
+      break;
+
+    case "do-what-it-says":
+      fs.readFile("recent.txt", "utf-8", function(err, data){
+        if (err){
+          console.log(err);
+        }
+        var dataArray = data.split(",");
+        input.push(dataArray[1]);
+        
+        if (dataArray[0] === "concert-this"){
+          concertDisplay();
+        }
+        else if (dataArray[0] === "spotify-this"){
+          songSearch();
+        }
+        else if (dataArray[0] === "movie-this"){
+          movieInfo();
+        }
+        else if (dataArray[0] === "read-profile"){
+          callProfile();
+        }
+      })
+      break;
+
+    case "help":
+      fs.readFile("help.txt", "utf-8", function (err, data){
+        if (err) {
+          console.log(err);
+        }
+        console.log(" ");
+        console.log(data);
+      })
+      logStream.write("\n" + currentTime + " --- " + "help");
+      break;
+
+    default:
+      console.log("Valid commands" + validCommands);
+      logStream.write("\n" + currentTime + " --- " + "invalid-command");
+  }
+
+
   
 function makeProfile() {
   inquirer
@@ -147,19 +180,7 @@ function makeProfile() {
 }
 
 function concertDisplay() {
-  var artist = [];
-
-  if (process.argv.length === 3) {
-    artist.push("Ravi" + "Coltrane");
-  }
-
-  else {
-    for (var a = 3; a < process.argv.length; a++){
-      artist.push(process.argv[a]);
-    }
-  }
-
-  var artistName = artist.join(" ");
+  var artistName = input.join(" ");
 
   var artistUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=codingbootcamp&date=upcoming";
 
@@ -179,19 +200,7 @@ function concertDisplay() {
 }
 
 function songSearch() {
-  var song = [];
-
-  if (process.argv.length === 3) {
-    song.push("Game" + "of" + "Pricks");
-  }
-
-  else {
-    for (var s = 3; s < process.argv.length; s++){
-      song.push(process.argv[s]);
-    }
-  }
-  
-  var songName = song.join(" ");
+  var songName = input.join(" ");
 
   spotify.search({type: "track", query: songName}, 
   function (err, data) {
@@ -202,21 +211,8 @@ function songSearch() {
   });
 }
 
-
 function movieInfo() {
-  var movie = [];
-
-  if (process.argv.length === 3) {
-    movie.push("Mr." + "Nobody");
-  }
-
-  else {
-    for (var m = 3; m < process.argv.length; m++) { 
-    movie.push(process.argv[m]);
-    }
-  }
-
-  var movieName = movie.join(" ");
+  var movieName = input.join(" ");
 
   var movieUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
