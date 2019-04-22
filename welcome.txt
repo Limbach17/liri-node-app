@@ -1,0 +1,3 @@
+Welcome! Liri is your all-around guide and resource for the media you love. If you like can start by creating a user
+profile to help Liri understand your taste. At any point, you can type in a command to display info about the stuff
+you love.

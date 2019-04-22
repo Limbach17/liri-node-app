@@ -1,0 +1,15 @@
+Curious when your favorite band is coming to town? Type "concert-this" into the
+terminal, followed by the name of a band, and Liri will show you relevant concert information
+provided by Bands in Town.
+
+Perhaps you were streaming a song and want to know more about it. Type "spotify-this-song" followed
+by the song title to return info about the song, powered by Spotify.
+
+You can also type "movie-this" and the name of a movie to get OMDb data. Basically everything
+you will need to know about that movie.
+
+At any point, you can make a new user profile by typing "make-profile", or you can get media info
+from an existing profile by typing "read-profile".
+
+
+Feeling lucky? Type "do-what-it-says" and something fun could happen.
