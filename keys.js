@@ -69,13 +69,26 @@ switch (action){
     logStream.write("\n" + currentTime + " --- " + "movie-this");
     break;
 
+/////////////////////////////////
   case "do-what-it-says":
-    console.log("I want it that way");
+    fs.readFile("recent.txt", "utf-8", function (err, data) {
+      if (err) {
+        console.log(err);
+      }
+      var dataArray = data.split(",");
+
+      switch (dattaArray[0]){
+        case 0:
+          break;
+        default: 
+          console.log("hi");
+      }
+    })
     logStream.write("\n" + currentTime + " --- " + "do-what-it-says");
     break;
-
+/////////////////////////////////
   case "read-profile":
-    console.log("Read profile");
+    callProfile();
     logStream.write("\n" + currentTime + " --- " + "read-profile");
     break;
 
@@ -91,7 +104,7 @@ switch (action){
     break;
 
   default:
-    console.log(validCommands);
+    console.log("Valid commands" + validCommands);
     logStream.write("\n" + currentTime + " --- " + "invalid-command");
 }
   
@@ -106,23 +119,30 @@ function makeProfile() {
 
       {
         type: "input",
-        message: "Add some of your favorite bands",
+        message: "Add some of your favorite bands separated by a comma",
         name: "userBands"
       },
 
       {
         type: "input",
-        message: "Add some of your favorite songs",
+        message: "Add some of your favorite songs separate by a comma",
         name: "userSongs"
       },
 
       {
         type: "input",
-        message: "Add someo of your favorite movies",
+        message: "Add someo of your favorite movies separated by a comma",
         name: "userMovies"
       }
     ]).then(function (inquirerResponse){
-        console.log(inquirerResponse);
+        var profile = inquirerResponse.username;
+        var bandsArray = inquirerResponse.userBands.split(",");
+        var songsArray = inquirerResponse.userSongs.split(",");
+        var moviesArray = inquirerResponse.userMovies.split(",");
+
+        obj[profile] = {bands: bandsArray,
+                        songs: songsArray,
+                        movies: moviesArray};
     })
 }
 
@@ -216,6 +236,10 @@ function movieInfo() {
       console.log("Starring: " + response.data.Actors);
     }
   );
+}
+
+function callProfile() {
+  console.log("call-profile");
 }
 
 
