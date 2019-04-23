@@ -24,15 +24,15 @@ function User(name, bands, songs, movies){
   this.movies = movies;
 }
 
-switch (action){
-  /* case "hello":
+switch (action){                                
+  case "hello":
     fs.readFile("welcome.txt", "utf-8", function(err, data){
       if (err) {
         console.log(err);
       }
-    
-      console.log(data);
-      console.log("-----------");
+      
+      console.log("\n\n" + data);
+      console.log("\n-----------");
     }) 
     
     inquirer
@@ -51,7 +51,7 @@ switch (action){
         }
       })
       logStream.write("\n" + currentTime + " --- " + "hello");
-      break; */
+      break;
 
     case "make-profile":
       makeProfile();
