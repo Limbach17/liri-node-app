@@ -3,7 +3,6 @@ var keys = require("./keys.js");
 var fs = require("fs");
 
 var logStream = fs.createWriteStream("log.txt", {flags: "a"});
-var recentStream = fs.createWriteStream("recent.txt", {flags: "w"});
 
 var axios = require("axios");
 var inquirer = require("inquirer");
@@ -26,7 +25,7 @@ function User(name, bands, songs, movies){
 }
 
 switch (action){
-  case "hello":
+  /* case "hello":
     fs.readFile("welcome.txt", "utf-8", function(err, data){
       if (err) {
         console.log(err);
@@ -52,7 +51,7 @@ switch (action){
         }
       })
       logStream.write("\n" + currentTime + " --- " + "hello");
-      break;
+      break; */
 
     case "make-profile":
       makeProfile();
@@ -128,10 +127,8 @@ switch (action){
         else if (dataArray[0] === "movie-this"){
           movieInfo();
         }
-        else if (dataArray[0] === "read-profile"){
-          callProfile();
-        }
       })
+      logStream.write("\n" + currentTime + " --- " + "do-what-it-says");
       break;
 
     case "help":
@@ -142,7 +139,7 @@ switch (action){
         console.log("\n" + data);
       })
       logStream.write("\n" + currentTime + " --- " + "help");
-      recentStream.write("help");
+      
       break;
 
     default:
@@ -151,7 +148,7 @@ switch (action){
         console.log ('"' + validCommands[c] + '"');
       }
       logStream.write("\n" + currentTime + " --- " + "invalid-command");
-      recentStream.write("help");
+      
 }
 
 function makeProfile(){
@@ -184,19 +181,22 @@ function makeProfile(){
         var bandsArray = inquirerResponse.userBands.split(",");
         var songsArray = inquirerResponse.userSongs.split(",");
         var moviesArray = inquirerResponse.userMovies.split(",");
-        var inquirerResponse.userName = new User(
+        var newUser = new User(
+          inquirerResponse.userName,
           bandsArray,
           songsArray,
           moviesArray
-        )
+        ) 
     })
-  recentStream.write("make-profile");
+
 }
 
 function concertDisplay(){
   var artistName = input.join(" ");
 
   var artistUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=codingbootcamp&date=upcoming";
+ 
+  var call = "concert-this" + "," + artistName;
 
   axios.get(artistUrl).then(
     function(response){
@@ -209,11 +209,18 @@ function concertDisplay(){
       }
     }
   );
-  recentStream.write("concert-this" + "," + "'" + artistName + "'");
+  
+  fs.writeFile("recent.txt", call, function(err){
+    if (err){
+      console.log(err);
+    }
+  });
 }
 
 function songSearch(){
   var songName = input.join(" ");
+
+  var call = "spotify-this" + "," + songName;
 
   spotify.search({type: "track", query: songName}, 
   function(err, data){
@@ -227,13 +234,20 @@ function songSearch(){
       console.log("Album: " + data.tracks.items[t].album.name);
     }
   });
-  recentStream.write("spotify-this" + "," + "'" + songName + "'");
+  
+  fs.writeFile("recent.txt", call, function(err){
+    if (err){
+      console.log(err);
+    }
+  });
 }
 
 function movieInfo(){
   var movieName = input.join(" ");
 
   var movieUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+
+  var call = "movie-this" + "," + movieName;
 
   axios.get(movieUrl).then(
     function(response){
@@ -250,11 +264,16 @@ function movieInfo(){
       console.log("Starring: " + response.data.Actors);
     }
   );
-  recentStream.write("movie-this" + "," + "'" + movieName + "'");
+  
+  fs.writeFile("recent.txt", call, function(err){
+    if (err){
+      console.log(err);
+    }
+  });
 }
 
 function callProfile(){
-  var profiled = input.join(" ");
+  console.log("call-profile");
 
 }
 
