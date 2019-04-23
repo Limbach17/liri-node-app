@@ -12,4 +12,4 @@ At any point, you can make a new user profile by typing "make-profile", or you c
 from an existing profile by typing "read-profile".
 
 
-Feeling lucky? Type "do-what-it-says" and something fun could happen.
+Feeling lost? Type "do-what-it-says" and the last command will run.
