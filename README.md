@@ -2,6 +2,14 @@
 
 Liri is a command-line application that returns information about artist, songs, and movies.
 
+
+![Liri Video](./liri_screenshot.png)
+
+
+https://www.youtube.com/watch?v=x50Ei22hDR8
+
+
+
 ## Installation
 
 Use the node.js package manager to install requisite packages. To call the Spotify API, users must
