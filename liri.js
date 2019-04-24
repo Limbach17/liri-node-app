@@ -9,7 +9,8 @@ var inquirer = require("inquirer");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 
-var validCommands = ["make-profile", "concert-this", "spotify-this-song", "movie-this", "do-what-it-says", "read-profile", "help"];
+var validCommands = ["make-profile", "concert-this", "spotify-this-song", "movie-this", 
+"do-what-it-says", "read-profile", "help"];
 
 var moment = require("moment");
 var currentTime = moment().format("dddd, MMMM D YYYY, h:mm:ss a");
@@ -17,15 +18,15 @@ var currentTime = moment().format("dddd, MMMM D YYYY, h:mm:ss a");
 var action = process.argv[2];
 var input = [];
 
-function User(name, bands, songs, movies){
+/* function User(name, bands, songs, movies){
   this.name = name;
   this.bands = bands;
   this.songs = songs;
   this.movies = movies;
-}
+} */
 
 switch (action){                                
-  case "hello":
+  /* case "hello":
     fs.readFile("welcome.txt", "utf-8", function(err, data){
       if (err) {
         console.log(err);
@@ -56,7 +57,7 @@ switch (action){
     case "make-profile":
       makeProfile();
       logStream.write("\n" + currentTime + " --- " + "make-profile");
-      break;
+      break; */
 
     case "concert-this":
       if (process.argv.length === 3){
@@ -97,7 +98,7 @@ switch (action){
       logStream.write("\n" + currentTime + " --- " + "movie-this");
       break;
 
-    case "read-profile":
+    /* case "read-profile":
       if (process.argv.length === 3){
         console.log("\nTry again with a user name.");
       }
@@ -108,7 +109,7 @@ switch (action){
       }
       callProfile();
       logStream.write("\n" + currentTime + " --- " + "read-profile");
-      break;
+      break; */
 
     case "do-what-it-says":
       fs.readFile("recent.txt", "utf-8", function(err, data){
@@ -151,7 +152,7 @@ switch (action){
       
 }
 
-function makeProfile(){
+/* function makeProfile(){
   inquirer
     .prompt([
       {
@@ -189,7 +190,7 @@ function makeProfile(){
         ) 
     })
 
-}
+} */
 
 function concertDisplay(){
   var artistName = input.join(" ");
@@ -272,11 +273,11 @@ function movieInfo(){
   });
 }
 
-function callProfile(){
+/* function callProfile(){
   console.log("call-profile");
 
 }
-
+ */
 
 
 
